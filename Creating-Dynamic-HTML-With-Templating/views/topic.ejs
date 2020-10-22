@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>You are searching for <%= name %></h1>
+    <p>The number of subscribers to this topic is <%= subscribers %></p>
+    <p><%= description %></p>
+
+    <% for(let post of posts) { %>
+        <article>
+            <p>Post title is <%= post.title %> and author is <b><%= post.author %></b></p>
+            <% if(post.img) { %>
+                <img src="<%=post.img%>" alt="">
+            <% } %>
+        </article>
+    <% } %>
+</body>
+</html>
