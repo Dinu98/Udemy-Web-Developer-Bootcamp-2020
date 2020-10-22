@@ -7,5 +7,15 @@
 </head>
 <body>
     <h1>Random number is: <%= random %></h1>
+    <h2>Random number is <%= random % 2 === 0 ? "EVEN" : "ODD" %></h2>
+
+    <p>
+        The other possible numbers were:
+        <% for (let number = 0; number <= 10; number++) { %>
+            <% if(number !== random) { %>
+                <%= number %>
+            <% } %>
+        <% } %>
+    </p>
 </body>
 </html>
