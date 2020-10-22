@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+<%- include("partials/head")%>
+
+
+    <%- include("partials/navbar") %>
+
     <h1>You are searching for <%= name %></h1>
     <p>The number of subscribers to this topic is <%= subscribers %></p>
     <p><%= description %></p>
@@ -18,5 +15,5 @@
             <% } %>
         </article>
     <% } %>
-</body>
-</html>
+
+<%- include("partials/footer")%>

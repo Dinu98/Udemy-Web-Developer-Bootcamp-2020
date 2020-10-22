@@ -6,6 +6,8 @@ const data = require("./data.json")
 app.set("view engine", "ejs");
 app.set("views",path.join(__dirname,"/views"));
 
+app.use(express.static(path.join(__dirname,"/public")));
+
 app.get("/", (req,res) => {
     res.render("home");
 });
@@ -18,8 +20,6 @@ app.get("/random", (req,res) => {
 app.get("/topics/:topic", (req,res) => {
     const { topic } = req.params;
     const topicData = data[topic];
-
-    console.log(topicData);
 
     if(topicData) {
         res.render("topic", {...topicData} )
