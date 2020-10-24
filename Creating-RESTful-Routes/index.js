@@ -5,6 +5,7 @@ const { Z_DATA_ERROR } = require('zlib');
 
 app.set("view engine", "ejs");
 app.set("views",path.join(__dirname,"views"));
+app.use(express.urlencoded({extended : true}));
 
 const comments = [
     {
@@ -23,6 +24,16 @@ const comments = [
 
 app.get("/comments", (req,res) => {
     res.render("comments/index",{ comments });
+});
+
+app.get("/comments/new", (req,res) => {
+    res.render("comments/new");
+});
+
+app.post("/comments", (req,res) => {
+    const {name, comment} = req.body;
+    comments.push({name, comment});
+    res.redirect("/comments");
 });
 
 app.listen(3000,() => {
