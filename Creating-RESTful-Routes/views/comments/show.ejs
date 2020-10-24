@@ -10,5 +10,8 @@
     <p><%=comment.comment%> - <b><%=comment.name%></b> </p>
     <a href="/comments">Back to index page</a>
     <a href="/comments/<%=comment.id%>/edit">Edit comment</a>
+    <form action="/comments/<%=comment.id%>?_method=DELETE" method="POST">
+        <button>Delete comment</button>
+    </form>
 </body>
 </html>
