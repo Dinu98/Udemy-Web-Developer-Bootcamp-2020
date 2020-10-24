@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const { Z_DATA_ERROR } = require('zlib');
+const {v4 : getID} = require("uuid");
+
 
 app.set("view engine", "ejs");
 app.set("views",path.join(__dirname,"views"));
@@ -9,14 +10,17 @@ app.use(express.urlencoded({extended : true}));
 
 const comments = [
     {
+        id : getID(),
         name : "user1",
         comment : "comment1"
     },
     {
+        id : getID(),
         name : "user2",
         comment : "comment2"
     },
     {
+        id : getID(),
         name : "user3",
         comment : "comment3"
     }
@@ -32,8 +36,14 @@ app.get("/comments/new", (req,res) => {
 
 app.post("/comments", (req,res) => {
     const {name, comment} = req.body;
-    comments.push({name, comment});
+    comments.push({name, comment, id : getID()});
     res.redirect("/comments");
+});
+
+app.get("/comments/:id", (req,res) => {
+    const {id} = req.params;
+    const comment = comments.find( (comment) => comment.id === id);
+    res.render("comments/show", {comment});
 });
 
 app.listen(3000,() => {
