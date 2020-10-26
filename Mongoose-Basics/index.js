@@ -57,6 +57,10 @@ movieSchema.virtual("titleYear").get(function () {
     return this.title + " " + this.year;
 })
 
+movieSchema.post("save",function (){
+    console.log(`Just saved this movie:${this.title}`);
+});
+
 const Movie = new mongoose.model("Movie",movieSchema);
 
 const find = async () => {
@@ -74,14 +78,14 @@ const updateScore = async () => {
 find();
 updateScore();
 
-// const someMovie = new Movie({title: "Movie", year: 1960, rating: "R",genres: ["Horror", "Action"]})
-// someMovie.save().
-// then( (data) => {
-//     console.log(data);
-// }).
-// catch( (err) => {
-//     console.log(err);
-// });
+const someMovie = new Movie({title: "Movie", year: 1960, rating: "R",genres: ["Horror", "Action"]})
+someMovie.save().
+then( (data) => {
+    console.log(data);
+}).
+catch( (err) => {
+    console.log(err);
+});
 
 
 // Movie.findOneAndUpdate({title: "Movie"},{year: 1900},{new: true, runValidators: true}).
