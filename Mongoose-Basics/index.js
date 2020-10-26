@@ -17,7 +17,7 @@ const movieSchema = new mongoose.Schema({
     year: {
         type: Number,
         required: true,
-        min: 1900
+        min: [1888, "There was no movie created before this year"]
     },
     score: {
         type: Number,
@@ -38,19 +38,60 @@ const movieSchema = new mongoose.Schema({
             type: Number,
             default: 0
         }
+    },
+    recommendedForChildren:{
+        type: String,
+        enum: ["Yes","No"]
     }
 });
 
+movieSchema.methods.hello = function () {
+    console.log(`Hello from ${this.title}`);
+}
+
+movieSchema.statics.bestScore = function () {
+    return this.updateMany({},{score: 10});
+}
+
+movieSchema.virtual("titleYear").get(function () {
+    return this.title + " " + this.year;
+})
+
 const Movie = new mongoose.model("Movie",movieSchema);
 
-const someMovie = new Movie({title: "Movie", year: 1960, rating: "R",genres: ["Horror", "Action"]})
-someMovie.save().
-then( (data) => {
-    console.log(data);
-}).
-catch( (err) => {
-    console.log(err);
-});
+const find = async () => {
+    const found = await Movie.findOne({title: "Movie"});
+    found.hello();
+    console.log(found.titleYear);
+}
+
+const updateScore = async () => {
+    const update = await Movie.bestScore();
+    console.log("Updated all movies");
+    console.log(update);
+}
+
+find();
+updateScore();
+
+// const someMovie = new Movie({title: "Movie", year: 1960, rating: "R",genres: ["Horror", "Action"]})
+// someMovie.save().
+// then( (data) => {
+//     console.log(data);
+// }).
+// catch( (err) => {
+//     console.log(err);
+// });
+
+
+// Movie.findOneAndUpdate({title: "Movie"},{year: 1900},{new: true, runValidators: true}).
+// then( (data) => {
+//     console.log(data);
+// }).
+// catch( (err) => {
+//     console.log(err);
+// });
+
 
 // Movie.insertMany([
 //     {title: "movie1", year: 1, score: 1, rating: "rating1"},
