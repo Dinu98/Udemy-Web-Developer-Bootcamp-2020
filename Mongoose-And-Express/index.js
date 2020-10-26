@@ -54,8 +54,15 @@ app.post("/products", async (req,res) => {
 
 app.patch("/products/:id", async (req,res) => {
     const { id } = req.params; 
-    product.findByIdAndUpdate(id, req.body, {runValidators: true});
+    await product.findByIdAndUpdate(id, req.body, {runValidators: true});
     res.redirect(`/products/${id}`);
+});
+
+app.delete("/products/:id", async (req,res) => {
+    console.log("sunt aici");
+    const { id } = req.params;
+    await product.findByIdAndDelete(id);
+    res.redirect("/products");
 });
 
 app.listen(3000, () => {
