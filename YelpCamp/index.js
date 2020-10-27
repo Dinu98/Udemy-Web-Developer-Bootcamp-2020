@@ -22,6 +22,11 @@ app.get("/", (req,res) => {
     res.send("It works");
 });
 
+app.get("/campgrounds", async (req,res) => {
+    const campgrounds = await campgroundSchema.find({});
+    res.render("campgrounds/index", { campgrounds });
+});
+
 app.listen(3000, () => {
     console.log("Server started");
 });
