@@ -47,13 +47,20 @@ app.get("/campgrounds/:id/edit", async (req,res) => {
 });
 
 app.post("/campgrounds", async (req,res) => {
-    const campground = await new campgroundSchema(req.body.campground).save();
-    res.redirect(`/campgrounds/${campground._id}`);
+    await new campgroundSchema(req.body.campground).save().
+        then( (newCampground) => {
+            res.redirect(`/campgrounds/${newCampground._id}`);
+        });
 });
 
 app.patch("/campgrounds/:id", async (req,res) => {
     const campground = await campgroundSchema.findByIdAndUpdate(req.params.id, req.body.campground);
     res.redirect(`/campgrounds/${campground._id}`);
+});
+
+app.delete("/campgrounds/:id", async (req,res) => {
+    await campgroundSchema.findByIdAndDelete(req.params.id);
+    res.redirect("/campgrounds");
 });
 
 app.listen(3000, () => {
