@@ -21,9 +21,14 @@ const randomLocation = async () => {
 
     for (let i = 0; i < 100; i++) {
         const randomNumber = Math.floor(Math.random() * 1000);
+        const price = Math.floor(Math.random() * 50);
         await new campgroundSchema({
             location: `${cities[randomNumber].city}, ${cities[randomNumber].state}`,
-            name: `${randomName(places)} ${randomName(descriptors)}`
+            name: `${randomName(places)} ${randomName(descriptors)}`,
+            price,
+            image:"https://source.unsplash.com/collection/483251",
+            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis temporibus quam iure quis fuga, velit tenetur eligendi asperiores repellat cumque rerum iste error aperiam pariatur blanditiis vero, suscipit cupiditate cum!"
+
         }).save();
     }
 };
