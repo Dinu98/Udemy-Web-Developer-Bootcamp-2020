@@ -4,6 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const campgroundSchema = require('./models/campground');
 const methodOverride = require('method-override');
+const ejsMate = require('ejs-mate');
 const { findByIdAndUpdate } = require('./models/campground');
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp',{
@@ -17,6 +18,7 @@ mongoose.connection.once("open", () => {
     console.log("Successfully connected to DB");
 });
 
+app.engine('ejs', ejsMate)
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname,"views"));
 
