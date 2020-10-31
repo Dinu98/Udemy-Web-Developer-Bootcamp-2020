@@ -1,13 +1,14 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
+const customError = require('./CustomError');
 
 const verifyPassword = (req,res,next) =>{
     const { password } = req.query
     if(password === "Pass"){
         return next();
     } else {
-        throw new Error("You need a password to access this route")
+        throw new customError(401,"You need a password to access this route");
     }
 }
 
@@ -22,8 +23,8 @@ app.get("/database", verifyPassword, (req,res) =>{
 });
 
 app.use((err,req,res,next) => {
-    console.log(err);
-    next(err);
+    const { status = 500, message = "Something went wrong"} = err;
+    res.status(status).send(message);
 });
 
 app.listen(3000, () =>{
