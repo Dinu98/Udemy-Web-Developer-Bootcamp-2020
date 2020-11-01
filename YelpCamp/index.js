@@ -8,6 +8,7 @@ const ejsMate = require('ejs-mate');
 const { findByIdAndUpdate } = require('./models/campground');
 const catchAsync = require("./utils/catchAsync");
 const ExpressError = require('./utils/ExpressError');
+const Joi = require('joi');
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp',{
     useUnifiedTopology: true,
@@ -51,6 +52,24 @@ app.get("/campgrounds/:id/edit", catchAsync(async (req,res) => {
 }));
 
 app.post("/campgrounds", catchAsync(async (req,res) => {
+    const campgroundsSchema = Joi.object({
+        campground: Joi.object({
+            name: Joi.string().required(),
+            location: Joi.string().required(),
+            description: Joi.string().required(),
+            image: Joi.string().required(),
+            price: Joi.number().min(0).required()
+
+        }).required()
+    });
+
+    const { error } = campgroundsSchema.validate(req.body);
+    
+    if(error){
+        const message = error.details.map(el => el.message).join(",");
+        throw new ExpressError(message, 400);
+    }
+
     await new campgroundSchema(req.body.campground).save().
         then( (newCampground) => {
             res.redirect(`/campgrounds/${newCampground._id}`);
