@@ -8,7 +8,7 @@ const ejsMate = require('ejs-mate');
 const { findByIdAndUpdate } = require('./models/campground');
 const catchAsync = require("./utils/catchAsync");
 const ExpressError = require('./utils/ExpressError');
-const Joi = require('joi');
+const validateSchemas = require('./validateSchemas');
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp',{
     useUnifiedTopology: true,
@@ -27,6 +27,19 @@ app.set("views", path.join(__dirname,"views"));
 
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
+
+const validateData = (req,res,next) => {
+    const validateCampgroundsSchema = validateSchemas.schemas.campgroundsSchema;
+
+    const { error } = validateCampgroundsSchema.validate(req.body);
+
+    if(error){
+        const message = error.details.map(el => el.message).join(",");
+        throw new ExpressError(message, 400);
+    } else {
+        next();
+    }
+}
 
 app.get("/", (req,res) => {
     res.send("It works");
@@ -51,32 +64,14 @@ app.get("/campgrounds/:id/edit", catchAsync(async (req,res) => {
     res.render("campgrounds/edit", { campground });
 }));
 
-app.post("/campgrounds", catchAsync(async (req,res) => {
-    const campgroundsSchema = Joi.object({
-        campground: Joi.object({
-            name: Joi.string().required(),
-            location: Joi.string().required(),
-            description: Joi.string().required(),
-            image: Joi.string().required(),
-            price: Joi.number().min(0).required()
-
-        }).required()
-    });
-
-    const { error } = campgroundsSchema.validate(req.body);
-    
-    if(error){
-        const message = error.details.map(el => el.message).join(",");
-        throw new ExpressError(message, 400);
-    }
-
+app.post("/campgrounds", validateData, catchAsync(async (req,res) => {
     await new campgroundSchema(req.body.campground).save().
         then( (newCampground) => {
             res.redirect(`/campgrounds/${newCampground._id}`);
         });
 }));
 
-app.patch("/campgrounds/:id", catchAsync(async (req,res) => {
+app.patch("/campgrounds/:id", validateData, catchAsync(async (req,res) => {
     const campground = await campgroundSchema.findByIdAndUpdate(req.params.id, req.body.campground);
     res.redirect(`/campgrounds/${campground._id}`);
 }));
