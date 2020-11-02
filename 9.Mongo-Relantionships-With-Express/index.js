@@ -38,6 +38,11 @@ app.get("/farms", async (req,res) => {
     res.render("farms/index", { farms });
 });
 
+app.get("/farms/:id", async (req,res) => {
+    const farm = await Farm.findById(req.params.id);
+    res.render("farms/show", { farm });
+});
+
 app.get("/products", async (req,res) => {
     let { category } = req.query;
     let products = [];
