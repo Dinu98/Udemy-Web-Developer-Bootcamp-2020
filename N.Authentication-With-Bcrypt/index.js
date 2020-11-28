@@ -57,11 +57,16 @@ app.post("/register", async (req,res) =>{
     res.redirect("/secret");
 });
 
+app.post("/logout", (req,res) => {
+    req.session.userId = null;
+    res.redirect("/login");
+});
+
 app.get("/secret", (req,res) => {
     if(!req.session.userId) {
         res.redirect("/login");
     }
-    res.send("You can only see this if you logged in");
+    res.render("secret");
 });
 
 
