@@ -21,6 +21,13 @@ app.set("views", "views");
 app.use(express.urlencoded({extended: true}));
 app.use(session({secret: "secret"}));
 
+const verifyLogin = (req,res,next) => {
+    if(!req.session.userId){
+        return res.redirect("/login");
+    }
+    next();
+};  
+
 app.get("/", (req,res) => {
     res.send("HOME PAGE");
 });
@@ -62,7 +69,7 @@ app.post("/logout", (req,res) => {
     res.redirect("/login");
 });
 
-app.get("/secret", (req,res) => {
+app.get("/secret",verifyLogin, (req,res) => {
     if(!req.session.userId) {
         res.redirect("/login");
     }
