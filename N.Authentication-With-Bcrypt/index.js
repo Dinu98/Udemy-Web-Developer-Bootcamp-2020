@@ -27,6 +27,21 @@ app.get("/register", (req,res) => {
     res.render("register");
 });
 
+app.get("/login", (req,res) => {
+    res.render("login");
+});
+
+app.post("/login", async (req,res) => {
+    const {username , password} = req.body;
+    const user  = await User.findOne({username});
+    const result = await bcrypt.compare(password,user.password);
+    if(result){
+        res.send("Successfully logged in");
+    } else {
+        res.send("Invalid credentials");
+    }
+});
+
 app.post("/register", async (req,res) =>{
     const {username, password} = req.body;
     const hash = await bcrypt.hash(password,12);
