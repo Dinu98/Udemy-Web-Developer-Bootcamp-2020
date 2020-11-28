@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const { urlencoded } = require('express');
 const User = require("./models/user");
+const session = require('express-session');
 
 mongoose.connect('mongodb://localhost:27017/AuthApp', {useNewUrlParser: true, useUnifiedTopology: true})
 .then ( () => {
@@ -18,6 +19,7 @@ app.set("view engine", "ejs");
 app.set("views", "views");
 
 app.use(express.urlencoded({extended: true}));
+app.use(session({secret: "secret"}));
 
 app.get("/", (req,res) => {
     res.send("HOME PAGE");
@@ -36,9 +38,10 @@ app.post("/login", async (req,res) => {
     const user  = await User.findOne({username});
     const result = await bcrypt.compare(password,user.password);
     if(result){
-        res.send("Successfully logged in");
+        req.session.userId = user._id;
+        res.redirect("/secret");
     } else {
-        res.send("Invalid credentials");
+        res.redirect("/login");
     }
 });
 
@@ -50,7 +53,15 @@ app.post("/register", async (req,res) =>{
         password : hash
     });
     await user.save();
-    res.redirect("/");
+    req.session.userId = user._id;
+    res.redirect("/secret");
+});
+
+app.get("/secret", (req,res) => {
+    if(!req.session.userId) {
+        res.redirect("/login");
+    }
+    res.send("You can only see this if you logged in");
 });
 
 
