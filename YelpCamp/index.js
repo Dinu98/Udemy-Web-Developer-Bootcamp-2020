@@ -12,7 +12,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const passLocal = require('passport-local');
 const User = require('./models/user');
-const { use } = require('passport');
+const userRouter = require('./routes/user');
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp',{
     useUnifiedTopology: true,
@@ -61,7 +61,7 @@ app.use((req,res,next) => {
     next();
 });
 
-
+app.use("/", userRouter);
 app.use("/campgrounds", campgroundRouter);
 app.use("/campgrounds/:id/reviews", reviewRouter);
 
