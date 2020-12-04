@@ -23,6 +23,7 @@ const randomLocation = async () => {
         const randomNumber = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 50);
         await new campgroundSchema({
+            user: "5fc953486e053d02a9f7bbbd",
             location: `${cities[randomNumber].city}, ${cities[randomNumber].state}`,
             name: `${randomName(places)} ${randomName(descriptors)}`,
             price,
