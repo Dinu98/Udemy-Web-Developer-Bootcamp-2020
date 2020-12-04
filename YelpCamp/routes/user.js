@@ -5,14 +5,13 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const userController = require('../controllers/user');
 
+router.route("/register")
+    .get(userController.registerForm)
+    .post(catchAsync(userController.register))
 
-router.get("/register", userController.registerForm);
-
-router.post("/register", catchAsync(userController.register));
-
-router.get("/login", userController.loginForm);
-
-router.post("/login", passport.authenticate('local', {failureFlash: true, failureRedirect:"/login"}), userController.login);
+router.route("/login")
+    .get(userController.loginForm)
+    .post(passport.authenticate('local', {failureFlash: true, failureRedirect:"/login"}), userController.login)
 
 router.get("/logout", middlewares.isLoggedIn, userController.logout);
 
