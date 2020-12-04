@@ -1,6 +1,6 @@
 const express = require('express');
 const passport = require('passport');
-const { user } = require('../middlewares');
+const  middlewares  = require('../middlewares');
 const User = require('../models/user');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
@@ -39,7 +39,7 @@ router.post("/login", passport.authenticate('local', {failureFlash: true, failur
     res.redirect(returnTo);
 });
 
-router.get("/logout", user.isLoggedIn, (req,res) => {
+router.get("/logout", middlewares.isLoggedIn, (req,res) => {
     req.logout();
     req.flash('success', 'successfully logged out');
     res.redirect("/campgrounds");

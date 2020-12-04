@@ -60,15 +60,9 @@ const validateReview = (req,res,next) => {
 }
 
 module.exports = {
-    campground:{
-        isAuthorCampground,
-        validateCampground
-    },
-    review:{
-        validateReview,
-        isAuthorReview
-    },
-    user: {
-        isLoggedIn
-    }
+    isAuthorCampground,
+    validateCampground,
+    validateReview,
+    isAuthorReview,
+    isLoggedIn
 };
