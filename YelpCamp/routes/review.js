@@ -8,6 +8,7 @@ const {review} = require('../middlewares');
 router.post("/", review.validateReview, catchAsync(async (req,res) =>{
     const campground = await Campground.findById(req.params.id);
     const review = new Review(req.body.review);
+    review.user = req.user._id;
     campground.reviews.push(review);
     await review.save();
     await campground.save();
@@ -15,7 +16,7 @@ router.post("/", review.validateReview, catchAsync(async (req,res) =>{
     res.redirect(`/campgrounds/${campground._id}`);
 }));
 
-router.delete("/:reviewID", catchAsync(async (req,res) => {
+router.delete("/:reviewID", review.isAuthorReview, catchAsync(async (req,res) => {
     const { id, reviewID } = req.params;
     await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewID }});
     await Review.findByIdAndDelete(reviewID);
