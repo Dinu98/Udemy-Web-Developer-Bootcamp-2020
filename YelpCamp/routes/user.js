@@ -1,8 +1,7 @@
 const express = require('express');
-const { session } = require('passport');
 const passport = require('passport');
-const isLoggedIn = require('../middlewares/isLoggedIn');
-const user = require('../models/user');
+const { user } = require('../middlewares');
+const User = require('../models/user');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 
@@ -14,7 +13,7 @@ router.get("/register", (req,res) => {
 router.post("/register", catchAsync(async(req,res,next) => {
     try{
         const {username, password, email} = req.body;
-        const newUser = new user({username, email});
+        const newUser = new User({username, email});
         const registeredUser = await user.register(newUser, password);
         req.login(registeredUser, err => {
             if(err){
@@ -40,7 +39,7 @@ router.post("/login", passport.authenticate('local', {failureFlash: true, failur
     res.redirect(returnTo);
 });
 
-router.get("/logout", isLoggedIn, (req,res) => {
+router.get("/logout", user.isLoggedIn, (req,res) => {
     req.logout();
     req.flash('success', 'successfully logged out');
     res.redirect("/campgrounds");
