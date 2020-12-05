@@ -27,8 +27,19 @@ const randomLocation = async () => {
             location: `${cities[randomNumber].city}, ${cities[randomNumber].state}`,
             name: `${randomName(places)} ${randomName(descriptors)}`,
             price,
-            image:"https://source.unsplash.com/collection/483251",
-            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis temporibus quam iure quis fuga, velit tenetur eligendi asperiores repellat cumque rerum iste error aperiam pariatur blanditiis vero, suscipit cupiditate cum!"
+            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis temporibus quam iure quis fuga, velit tenetur eligendi asperiores repellat cumque rerum iste error aperiam pariatur blanditiis vero, suscipit cupiditate cum!",
+            images:[ 
+                {
+                url:
+                 'https://res.cloudinary.com/deqyehnld/image/upload/v1607205868/YelpCamp/hk7asy6qyghqmttloylu.jpg',
+                filename: 'YelpCamp/hk7asy6qyghqmttloylu' 
+                },
+                {
+                url:
+                 'https://res.cloudinary.com/deqyehnld/image/upload/v1607205868/YelpCamp/bhfomkev6df9rvcebty6.jpg',
+                filename: 'YelpCamp/bhfomkev6df9rvcebty6' 
+                } 
+            ]
 
         }).save();
     }
