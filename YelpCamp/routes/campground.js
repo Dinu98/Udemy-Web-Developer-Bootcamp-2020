@@ -14,7 +14,7 @@ router.get("/new", middlewares.isLoggedIn, campgroundController.new);
 
 router.route("/:id")
     .get(catchAsync(campgroundController.show))
-    .patch(middlewares.isLoggedIn, middlewares.isAuthorCampground, middlewares.validateCampground, catchAsync(campgroundController.patch))
+    .patch(middlewares.isLoggedIn, middlewares.isAuthorCampground, upload.array("image"), middlewares.validateCampground, catchAsync(campgroundController.patch))
     .delete(middlewares.isLoggedIn, middlewares.isAuthorCampground, catchAsync(campgroundController.delete))
 
 router.get("/:id/edit", middlewares.isLoggedIn, middlewares.isAuthorCampground, catchAsync(campgroundController.edit));

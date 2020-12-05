@@ -41,14 +41,17 @@ module.exports.create = async (req,res) => {
     req.body.campground.images = req.files.map( fl => ({url: fl.path, filename: fl.filename}));
     await new Campground(req.body.campground).save().
         then( (newCampground) => {
-            console.log(newCampground.images);
             req.flash("success", "Successfully created a new campground");
             res.redirect(`/campgrounds/${newCampground._id}`);
         });
 }
 
 module.exports.patch = async (req,res) => {
-    const campground = await Campground.findByIdAndUpdate(req.params.id, req.body.campground);
+    const campground = await Campground.findById(req.params.id);
+    Object.assign(campground, req.body.campground);
+    const images = req.files.map( fl => ({url: fl.path, filename: fl.filename}))
+    campground.images.push(...images)
+    await campground.save();
     req.flash("success", "Successfully updated a campground");
     res.redirect(`/campgrounds/${campground._id}`);
 };
