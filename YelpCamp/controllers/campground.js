@@ -38,8 +38,10 @@ module.exports.edit = async (req,res) => {
 
 module.exports.create = async (req,res) => {
     req.body.campground.user = req.user._id;
+    req.body.campground.images = req.files.map( fl => ({url: fl.path, filename: fl.filename}));
     await new Campground(req.body.campground).save().
         then( (newCampground) => {
+            console.log(newCampground);
             req.flash("success", "Successfully created a new campground");
             res.redirect(`/campgrounds/${newCampground._id}`);
         });
