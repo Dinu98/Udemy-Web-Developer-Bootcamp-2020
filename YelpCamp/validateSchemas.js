@@ -8,7 +8,8 @@ campgroundsSchema = Joi.object({
         // image: Joi.string().required(),
         price: Joi.number().min(0).required()
 
-    }).required()
+    }).required(),
+    deleteImages: Joi.array()
 });
 
 reviewSchema = Joi.object({
