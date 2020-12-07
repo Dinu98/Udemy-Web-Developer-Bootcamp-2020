@@ -28,6 +28,7 @@ const randomLocation = async () => {
             name: `${randomName(places)} ${randomName(descriptors)}`,
             price,
             description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis temporibus quam iure quis fuga, velit tenetur eligendi asperiores repellat cumque rerum iste error aperiam pariatur blanditiis vero, suscipit cupiditate cum!",
+            geometry: { coordinates: [ -99.163312, 19.349383 ], type: 'Point' },
             images:[ 
                 {
                 url:
