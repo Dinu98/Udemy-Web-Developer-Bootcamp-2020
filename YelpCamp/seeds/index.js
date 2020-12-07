@@ -19,7 +19,7 @@ const randomName = arr => arr[Math.floor(Math.random() * arr.length)];
 const randomLocation = async () => {
     await campgroundSchema.deleteMany({});
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 1000; i++) {
         const randomNumber = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 50);
         await new campgroundSchema({
@@ -28,7 +28,7 @@ const randomLocation = async () => {
             name: `${randomName(places)} ${randomName(descriptors)}`,
             price,
             description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis temporibus quam iure quis fuga, velit tenetur eligendi asperiores repellat cumque rerum iste error aperiam pariatur blanditiis vero, suscipit cupiditate cum!",
-            geometry: { coordinates: [ -99.163312, 19.349383 ], type: 'Point' },
+            geometry: { coordinates: [ cities[randomNumber].longitude, cities[randomNumber].latitude ], type: 'Point' },
             images:[ 
                 {
                 url:
