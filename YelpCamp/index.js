@@ -20,9 +20,11 @@ const userRouter = require('./routes/user');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const MongoDBStore = require('connect-mongo')(session);
-// const dbUrl = process.env.MONGO_DB_URL;
-//mongodb://localhost:27017/yelp-camp
-mongoose.connect("mongodb://localhost:27017/yelp-camp",{
+
+const dbUrl = process.env.MONGO_DB_URL || "mongodb://localhost:27017/yelp-camp";
+const secret = process.env.SECRET || "secret";
+
+mongoose.connect(dbUrl,{
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -35,8 +37,8 @@ mongoose.connection.once("open", () => {
 });
 
 const store = new MongoDBStore({
-    url: "mongodb://localhost:27017/yelp-camp",
-    secret:"secret",
+    url: dbUrl,
+    secret,
     touchAfter: 24 * 3600
 });
 
@@ -47,7 +49,7 @@ store.on("error",function(e) {
 const sessionConfig = {
     store,
     name:"session",
-    secret: 'secret',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
