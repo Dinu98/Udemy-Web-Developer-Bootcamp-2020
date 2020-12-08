@@ -72,7 +72,7 @@ app.use("/campgrounds/:id/reviews", reviewRouter);
 
 
 app.get("/", (req,res) => {
-    res.send("It works");
+    res.render("home");
 });
 
 app.all('*', (req,res,next) => {
