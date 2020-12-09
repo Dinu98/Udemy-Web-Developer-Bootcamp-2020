@@ -2,8 +2,6 @@ B.Creating-Dynamic-HTML-With-Templating/node_modules
 C.Creating-RESTful-Routes/node_modules
 D.Mongoose-Basics/node_modules
 E.Mongoose-And-Express/node_modules
-YelpCamp/node_modules
-YelpCamp/.env
 F.Middleware/node_modules
 G.Handling-Errors-In-Express/node_modules
 H.Mongo-Relationships/node_modules
@@ -13,3 +11,5 @@ K.Cookies-In-Express/node_modules
 L.Sessions-In-Express/node_modules
 M.Flash-Messages/node_modules
 N.Authentication-With-Bcrypt/node_modules
+O.YelpCamp(FINAL PROJECT)/node_modules
+O.YelpCamp(FINAL PROJECT)/.env
